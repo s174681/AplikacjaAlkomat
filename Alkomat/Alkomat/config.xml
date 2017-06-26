@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+xmlns:gap = "http://phonegap.com/ns/1.0"
+id= "testaplikacji"
+versionCode = "1"
+version = "1.0.0" >
+<name>Alkomat</name>
+<description>ap do obliczenia stężenia alkocolu we krwi</description>
+<author>Ewa</author>
+<gap:platform name="android" />
+<gap:plugin name="org.apache.cordova.dialogs" />
+<plugin name="org.apache.cordova.network-information" source="pgb" spec="0.2.15"/>
+<plugin name="org.apache.cordova.device" source="pgb" spec="0.3.0"/>
+<plugin name="org.apache.cordova.vibration" spec="0.3.13" source="pgb" />
+	
+<gap:plugin name="org.apache.cordova.splashscreen" />
+<preference name="SplashScreen" value="screen"/>
+<preference name="SplashScreenDelay" value="10000" />
+
+<gap:icon src="icon.png" platform="android" width="57" height="57" density="mdpi" />
+<gap:splash src="iphonee.png" />
+</widget>

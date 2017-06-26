@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/themes/my-theme.min.css" />
+<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+<link rel="stylesheet" href="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+<link rel="stylesheet" href="jquery.mobile-1.4.5/jquery.mobile.structure-1.4.5.min.css">
+<script src="jquery.mobile-1.4.5/jquery-1.11.3.min.js"></script>
+<script src="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+<script type="text/javascript" src="js/Chart.min.js"></script>
+<link href="css/style.css" media="screen" rel="stylesheet">
+		<script type="text/javascript" charset="utf-8">
+		$(document).ready(function () {
+			function init() {
+						
+				document.addEventListener("deviceready",onDeviceReady, false);
+				
+				if (localStorage.plec) {
+					$('#plec').find("option[value=" + localStorage.plec + "]").attr("selected", true);
+				}
+				if (localStorage["slider-waga"]) {
+					$('#slider-waga').val(localStorage["slider-waga"]);
+				}
+				
+				if (localStorage["slider-wzrost"]) {
+					$('#slider-wzrost').val(localStorage["slider-wzrost"]);
+				}
+				
+				if (localStorage["slider-wiek"]) {
+					$('#slider-wiek').val(localStorage["slider-wiek"]);
+				}
+				
+				if (localStorage.godzina_rozpoczecia) {
+					$('#godzina_rozpoczecia').find("option[value=" + localStorage.godzina_rozpoczecia + "]").attr("selected", true);
+				}
+				
+				if (localStorage.czas) {
+					$('#czas').find("option[value=" + localStorage.czas + "]").attr("selected", true);
+				}
+				
+				if (localStorage.ilosc) {
+					$('#ilosc').find("option[value=" + localStorage.ilosc + "]").attr("selected", true);
+				}
+				
+				if (localStorage.typ) {
+					$('#typ').find("option[value=" + localStorage.typ + "]").attr("selected", true);
+				}
+				
+				if (localStorage["procent"]) {
+					$('#procent').val(localStorage["procent"]);
+				}
+			}
+			$('.localStore').keyup(function () {
+				localStorage[$(this).attr('id')] = $(this).val();
+			});
+			init();
+			
+		});
+			
+			function onDeviceReady() {
+				document.getElementById("vibration").addEventListener("click", vibration);
+				navigator.notification.alert("PhoneGap gotowy do działania!");
+									
+				var myDevice = document.getElementById('deviceProperties');
+				myDevice.innerHTML = 'Device Name: ' + device.name + '<br />' +
+									'Device Cordova: ' + device.cordova + '<br />' +
+									'Device Platform: ' + device.platform + '<br />' +
+									'Device UUID: ' + device.uuid + '<br />' +
+									'Device Model: ' + device.model + '<br />' +
+									'Device Version: ' + device.version + '<br />';
+			}	
+			
+			function vibration() {
+			   var time = 3000;
+			   navigator.vibrate(time);
+			}
+
+			function checkConnection() {
+			var networkState = navigator.connection.type;
+
+			var states = {};
+			states[Connection.UNKNOWN]  = 'Unknown connection';
+			states[Connection.ETHERNET] = 'Ethernet connection';
+			states[Connection.WIFI]     = 'WiFi connection';
+			states[Connection.CELL_2G]  = 'Cell 2G connection';
+			states[Connection.CELL_3G]  = 'Cell 3G connection';
+			states[Connection.CELL_4G]  = 'Cell 4G connection';
+			states[Connection.CELL]     = 'Cell generic connection';
+			states[Connection.NONE]     = 'No network connection';
+
+			document.getElementById("demo").innerHTML = 'Connection type: ' + states[networkState];
+		}
+
+			function dodaj() {
+				var ilosc = parseInt($("#ilosc").val());
+				var typ;
+				var procent = parseFloat($("#procent").val());
+				
+				if (document.getElementById("typ").value == "dp") {
+					typ = "500";
+				} else if (document.getElementById("typ").value == "kw") {
+					typ = "50";
+				} else if (document.getElementById("typ").value == "dd") {
+					typ = "d50";
+				} else if (document.getElementById("typ").value == "sw") {
+					typ = "100";
+				} else if (document.getElementById("typ").value == "lw") {
+					typ = "200";
+				} else if (document.getElementById("typ").value == "bw") {
+					typ = "750";
+				} else if (document.getElementById("typ").value == "md") {
+					typ = "25";
+				} else if (document.getElementById("typ").value == "mp") {
+					typ = "330";
+				}
+
+				if (typeof(Storage) !== "undefined") {
+					if (typ == "500") {
+						localStorage.setItem("procent500", procent);
+						localStorage.setItem("ilosc500", ilosc);
+						alert("Dane zapisane!");
+					} else if (typ == "50") {
+						localStorage.setItem("procent50", procent);
+						localStorage.setItem("ilosc50", ilosc);
+						alert("Dane zapisane!");
+					} else if (typ == "d50") {
+						localStorage.setItem("dprocent50", procent);
+						localStorage.setItem("dilosc50", ilosc);
+						alert("Dane zapisane!");
+					} else if (typ == "100") {
+						localStorage.setItem("procent100", procent);
+						localStorage.setItem("ilosc100", ilosc);
+						alert("Dane zapisane!");
+					} else if (typ == "25") {
+						localStorage.setItem("procent25", procent);
+						localStorage.setItem("ilosc25", ilosc);
+						alert("Dane zapisane!");
+					} else if (typ == "330") {
+						localStorage.setItem("procent330", procent);
+						localStorage.setItem("ilosc330", ilosc);
+						alert("Dane zapisane!");
+					} else if (typ == "200") {
+						localStorage.setItem("procent200", procent);
+						localStorage.setItem("ilosc200", ilosc);
+						alert("Dane zapisane!");
+					} else if (typ == "750") {
+						localStorage.setItem("procent750", procent);
+						localStorage.setItem("ilosc750", ilosc);
+						alert("Dane zapisane!");
+					}
+				} else {
+					alert ("Błąd!");
+				}
+				//location.reload();
+			
+			}
+			
+			function pokaz() {
+				var procent500 = localStorage.getItem("procent500");
+				var ilosc500 = localStorage.getItem("ilosc500");
+				var typ500 = 'Duże Piwo (0,5)';
+				var procent50 = localStorage.getItem("procent50");
+				var ilosc50 = localStorage.getItem("ilosc50");
+				var typ50 = '50ml kieliszek wódki';
+				var dprocent50 = localStorage.getItem("dprocent50");
+				var dilosc50 = localStorage.getItem("dilosc50");
+				var dtyp50 = 'Duży Drink';
+				var procent100 = localStorage.getItem("procent100");
+				var ilosc100 = localStorage.getItem("ilosc100");
+				var typ100 = 'Setka wódki';
+				var procent25 = localStorage.getItem("procent25");
+				var ilosc25 = localStorage.getItem("ilosc25");
+				var typ25 = 'Mały Drink';
+				var procent330 = localStorage.getItem("procent330");
+				var ilosc330 = localStorage.getItem("ilosc330");
+				var typ330 = 'Małe Piwo (0,33)';
+				var procent200 = localStorage.getItem("procent200");
+				var ilosc200 = localStorage.getItem("ilosc200");
+				var typ200 = 'Lampka wina';
+				var procent750 = localStorage.getItem("procent750");
+				var ilosc750 = localStorage.getItem("ilosc750");
+				var typ750 = 'Butelka wina';
+				
+				var myDevice = document.getElementById('wyswietl');
+
+				myDevice.innerHTML ='<center><table>'+
+						'<tr><td><label for="ilosc">'+ilosc500+'</label></td>'+
+						'<td><center><label for="typ">'+typ500+'</label></center></td>'+
+						'<td><center><label for="procent">'+procent500+'</label></center></td></tr>'
+						+
+						'<tr><td><label for="ilosc">'+ilosc50+'</label></td>'+
+						'<td><center><label for="typ">'+typ50+'</label></center></td>'+
+						'<td><center><label for="procent">'+procent50+'</i></label></center></td></tr>'
+						+
+						'<tr><td><label for="ilosc">'+ilosc100+'</label></td>'+
+						'<td><center><label for="typ">'+typ100+'</label></center></td>'+
+						'<td><center><label for="procent">'+procent100+'</i></label></center></td></tr>'
+						+
+						'<tr><td><label for="ilosc">'+ilosc25+'</label></td>'+
+						'<td><center><label for="typ">'+typ25+'</label></center></td>'+
+						'<td><center><label for="procent">'+procent25+'</i></label></center></td></tr>'
+						+
+						'<tr><td><label for="ilosc">'+ilosc200+'</label></td>'+
+						'<td><center><label for="typ">'+typ200+'</label></center></td>'+
+						'<td><center><label for="procent">'+procent200+'</i></label></center></td></tr>'
+						+
+						'<tr><td><label for="ilosc">'+ilosc750+'</label></td>'+
+						'<td><center><label for="typ">'+typ750+'</label></center></td>'+
+						'<td><center><label for="procent">'+procent750+'</i></label></center></td></tr>'
+						+
+						'<tr><td><label for="ilosc">'+ilosc330+'</label></td>'+
+						'<td><center><label for="typ">'+typ330+'</label></center></td>'+
+						'<td><center><label for="procent">'+procent330+'</i></label></center></td></tr>'
+						+
+						'<tr><td><label for="ilosc">'+dilosc50+'</label></td>'+
+						'<td><center><label for="typ">'+dtyp50+'</label></center></td>'+
+						'<td><center><label for="procent">'+dprocent50+'</i></label></center></td></tr></table></center>'
+						
+						
+			}
+			
+			function usun(){
+			localStorage.clear();
+				alert("Lista wyczyszczona!");
+				//location.reload();
+			}
+				
+			
+			
+			function policz() {
+				var waga = $("#slider-waga").val();
+				var wzrost = $("#slider-wzrost").val();
+				var lata = $("#slider-wiek").val();
+				var plec = $("#plec").val();
+
+				if (plec = '0,7') {
+					tbw = 2.447 - (0.09156*lata) + (0.1074*wzrost) + (0.3362*waga)
+				} else if (plec = '0,6') {
+					tbw = (0.1069*wzrost) + (0.2466*waga) - 2.097
+				} 
+				
+				var tbw2 = tbw.toFixed(2);
+				
+				var procent500 = localStorage.getItem("procent500");
+				var ilosc500 = localStorage.getItem("ilosc500");
+				var wartosc500 = ((procent500/100)*ilosc500*500).toFixed(2);
+				var procent50 = localStorage.getItem("procent50");
+				var ilosc50 = localStorage.getItem("ilosc50");
+				var wartosc50 = ((procent50/100)*ilosc50*50).toFixed(2);
+				var dprocent50 = localStorage.getItem("dprocent50");
+				var dilosc50 = localStorage.getItem("dilosc50");
+				var dwartosc50 = ((dprocent50/100)*dilosc50*50).toFixed(2);
+				var procent100 = localStorage.getItem("procent100");
+				var ilosc100 = localStorage.getItem("ilosc100");
+				var wartosc100 = ((procent100/100)*ilosc100*100).toFixed(2);
+				var procent25 = localStorage.getItem("procent25");
+				var ilosc25 = localStorage.getItem("ilosc25");
+				var wartosc25 = ((procent25/100)*ilosc25*25).toFixed(2);
+				var procent330 = localStorage.getItem("procent330");
+				var ilosc330 = localStorage.getItem("ilosc330");
+				var wartosc330 = ((procent330/100)*ilosc330*330).toFixed(2);
+				var procent200 = localStorage.getItem("procent200");
+				var ilosc200 = localStorage.getItem("ilosc200");
+				var wartosc200 = ((procent200/100)*ilosc200*200).toFixed(2);
+				var procent750 = localStorage.getItem("procent750");
+				var ilosc750 = localStorage.getItem("ilosc750");
+				var wartosc750 = ((procent750/100)*ilosc750*750).toFixed(2);
+
+				var gramy = (parseFloat(wartosc500) + parseFloat(wartosc50) + parseFloat(dwartosc50) + parseFloat(wartosc750) + parseFloat(wartosc200) + parseFloat(wartosc330) + parseFloat(wartosc25) + parseFloat(wartosc100))*0.79;
+				var gramy2 = gramy.toFixed(2);
+				
+				var czas = parseFloat($("#czas").val());
+				var czas2 = (czas/60).toFixed(2);
+				var godzina_rozpoczecia = parseFloat($("#godzina_rozpoczecia").val());
+				var godzina_rozpoczecia2 = (godzina_rozpoczecia*1).toFixed(2);
+				
+				
+				var god = new Date().getHours();
+				var min = new Date().getMinutes();
+ 
+				var godzina = parseFloat((min/60) + god);
+				var godzina2 = (godzina).toFixed(2);
+				
+				var okres = parseFloat(godzina_rozpoczecia2) + parseFloat(czas2); 
+				var czas_roznica = parseFloat(godzina2) - okres; 
+				var czas_roznica2 = czas_roznica.toFixed(2);
+				
+				var stezenie_po = (gramy2/tbw2)*0.8-(czas2*0.15);
+				var stezenie_po2 = stezenie_po.toFixed(1);
+				var result = (gramy2/tbw2)*0.8-(czas_roznica2*0.15);
+				if (result >= 0)
+				{var result2 = result.toFixed(1)}
+				else if (result < 0)
+				{var result2 = 0}
+				
+				
+				if (result2 > 4.0)
+				{info = 'JESTEŚ PIJANY, (STOPIEŃ 5)'}
+				else if (result2 >= 3.0 && result2 < 4.0)
+				{info = 'JESTEŚ PIJANY, (STOPIEŃ 4)'}
+				else if (result2 >= 2.0 && result2 < 3.0)
+				{info = 'JESTEŚ PIJANY, (STOPIEŃ 3)'}
+				else if (result2 >= 1.0 && result2 < 2.0)
+				{info = 'JESTEŚ PIJANY, (STOPIEŃ 2)'}
+				else if (result2 >= 0.2 && result2 < 1.0)
+				{info = 'JESTEŚ PIJANY, (STOPIEŃ 1)'}
+				else if (result2 < 0.2)
+				{info = 'JESTEŚ TRZEŹWY, MOŻESZ PROWADZIĆ SAMOCHÓD'}
+				else if (result2 == "NaN")
+				{info = "Ponów próbę"}
+				
+				if (czas<60)
+				{zakonczenie = godzina_rozpoczecia+':'+czas}
+				else if (czas>=60)
+				{zakonczenie = godzina_rozpoczecia+(czas/60)+':00'}
+
+
+					var LineChart = {
+						labels : [godzina_rozpoczecia+':00',zakonczenie,god+':'+min,god+1+':'+min,god+2+':'+min ],
+						datasets : [
+							{
+								fillColor : "rgba(151,249,190,0.5)",
+								strokeColor : "rgba(255,255,255,1)",
+								pointColor : "rgba(220,220,220,1)",
+								pointStrokeColor : "#fff",
+								data : [0,stezenie_po2,result2,(result2-0.15)<0?0:result2-0.15,(result2-0.3)<0?0:result2-0.3]
+							}
+						]
+						
+					}
+
+				var myLineChart = new Chart(document.getElementById("canvas").getContext("2d")).Line(LineChart, {scaleFontSize : 13, 	scaleFontColor : "#ffa45e"});
+				
+				
+				var myDevice= document.getElementById('promile');
+				myDevice.innerHTML= '<center>Twoje stężenie alkoholu we krwi wynosiło: '+stezenie_po2+' promili <br/>' +
+									'Obecnie twoje stężenie alkoholu we krwi wynosi: '+result2+' promili <br/>' +
+									info +'<br/><br/></center>';
+			}
+
+		</script>
+			
+</head>
+<body onload="init()">
+	
+		<div data-role="page" id="fromularz">
+
+			<div data-role="header" data-position="fixed" data-theme="c">
+				<h1>Alkomat</h1>
+				<a href="#myPanel" data-icon="bars" data-iconpos="notext">Menu</a>
+			</div>
+		
+			<div data-role="main" class="ui-content" id="add">
+				<h1 align="center">Formularz</h1>
+				<form name="local_storage_form">
+					<select name="plec" id="plec" class="localStore">
+						<option value="0,7">Wybierz płeć:</option>
+						<option value="0,7">Mężczyzna</option>
+						<option value="0,6">Kobieta</option>
+					</select>
+					<div class="ui-field-contain">
+						<label for="slider-waga">Waga:</label>
+						<input class="localStore" name="slider-waga" id="slider-waga" data-highlight="true" min="40" max="120" value="60" type="range">
+						<label for="slider-wzrost">Wzrost:</label>
+						<input class="localStore" name="slider-wzrost" id="slider-wzrost" data-highlight="true" min="150" max="210" value="170" type="range">
+						<label for="slider-wiek">Wiek:</label>
+						<input class="localStore" name="slider-wiek" id="slider-wiek" data-highlight="true" min="18" max="100" value="25" type="range">
+						
+						<label for="godzina_rozpoczecia">Początek picia o godzinie:</label>
+							<select class="localStore" name="godzina_rozpoczecia" id="godzina_rozpoczecia">
+								<option value="0">0:00</option>
+								<option value="1">1:00</option>
+								<option value="2">2:00</option>
+								<option value="3">3:00</option>
+								<option value="4">4:00</option>
+								<option value="5">5:00</option>
+								<option value="6">6:00</option>
+								<option value="7">7:00</option>
+								<option value="8">8:00</option>
+								<option value="9">9:00</option>
+								<option value="10">10:00</option>
+								<option value="11">11:00</option>
+								<option value="12">12:00</option>
+								<option value="13">13:00</option>
+								<option value="14">14:00</option>
+								<option value="15">15:00</option>
+								<option value="16">16:00</option>
+								<option value="17">17:00</option>
+								<option value="18">18:00</option>
+								<option value="19">19:00</option>
+								<option value="20">20:00</option>
+								<option value="21">21:00</option>
+								<option value="22">22:00</option>
+								<option value="23">23:00</option>
+							</select>
+							
+						<label for="czas" >Picie trwało przez:</label>
+						<select class="localStore" name="czas" id="czas">
+								<option value="15">15 minut</option>
+								<option value="30">30 minut</option>
+								<option value="60">1 godzina</option>
+								<option value="120">2 godziny</option>
+								<option value="180">3 godziny</option>
+								<option value="240">4 godziny</option>
+								<option value="300">5 godzin</option>
+								<option value="360">6 godzin</option>
+								<option value="420">7 godzin</option>
+								<option value="480">8 godzin</option>
+								<option value="720">dłużej</option>
+						</select>
+					</div>
+					
+						<h3><center>Wypiłem następujące ilości alkoholu</center></h3>
+						
+						<center>
+						<table><tr><td><label for="ilosc">Ilość<i>[szt.]</i></label></td>
+						<td><center><label for="typ">Typ alkoholu</label></center></td>
+						<td><center><label for="procent">Zawartość<i>[alk.%]</i></label></center></td></tr>
+						<tr><td><select name="ilosc" id="ilosc" class="localStore">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+						</select></td>
+						<td><select name="typ" id="typ" class="localStore">
+							<option value="mp">Małe Piwo (0,33)</option>
+							<option value="dp">Duże Piwo (0,5)</option>
+							<option value="kw">50ml kieliszek wódki</option>
+							<option value="sw">Setka wódki</option>
+							<option value="lw">Lampka wina</option>
+							<option value="bw">Butelka wina</option>
+							<option value="md">Mały Drink</option>
+							<option value="dd">Duży Drink</option>
+						</select></td>
+						<td><input class="localStore" name="procent" type="text" id="procent"/></td></tr>
+						</table>
+						</center>
+						
+					<center><a href="#" onclick="dodaj()" class="ui-btn ui-shadow ui-corner-all ui-icon-plus ui-btn-icon-notext"></a>
+					<a href="#" onclick="pokaz()" class="ui-btn ui-shadow ui-corner-all ui-icon-search ui-btn-icon-notext"></a>
+					<p id="wyswietl"></p>
+					<a href="#" onclick="usun()" class="ui-btn ui-shadow ui-corner-all ui-icon-delate ui-btn-icon-notext"></a></center>
+					<a href="#wynik" onclick="return policz()" class="ui-btn">Sprawdz<a>
+					
+				</form>
+
+			</div>
+
+			<div data-role="footer" data-position="fixed">
+				<h1>Ewa Polaniak</h1>
+			</div>
+			
+			<div data-role="panel" id="myPanel" data-theme="c" > 
+				<ul data-role="listview">
+					<li data-icon="back"><a href="#" data-rel="close">Zamknij</a></li>
+					<li><a href="#fromularz">Formularz</a></li>
+					<li><a href="#wynik">Wynik</a></li>
+					<li><a href="#autor">Autor</a></li>
+				</ul>
+			</div>
+			
+		</div>
+		
+		<div data-role="page" id="wynik" data-theme="c">
+
+			<div data-role="header" data-position="fixed" data-theme="c">
+				<h1>Alkomat</h1>
+				<a href="#myPanel" data-icon="bars" data-iconpos="notext">Menu</a>
+			</div>
+		
+			<div data-role="main" class="ui-content">
+				<p id="promile"></p>	
+				<center><canvas id="canvas" height="300" width="360"></canvas>
+				<br/><br/><font color="red"><b>Powyższe obliczenia są tylko teoretyczne i przybliżone, nie powinny byc traktowane jako wiarygodny wynik</b></font>
+				</center>
+			</div>
+
+			<div data-role="footer" data-position="fixed">
+				<h1>Ewa Polaniak</h1>
+			</div>
+			
+			<div data-role="panel" id="myPanel"> 
+				<ul data-role="listview">
+					<li data-icon="back"><a href="#" data-rel="close">Zamknij</a></li>
+					<li><a href="#fromularz">Formularz</a></li>
+					<li><a href="#wynik">Wynik</a></li>
+					<li><a href="#autor">Autor</a></li>
+				</ul>
+			</div>
+			
+		</div>
+		
+				<div data-role="page" id="autor" data-theme="c">
+
+			<div data-role="header" data-position="fixed" data-theme="c">
+				<h1>Alkomat</h1>
+				<a href="#myPanel" data-icon="bars" data-iconpos="notext">Menu</a>
+			</div>
+		
+			<div data-role="main" class="ui-content">
+				<h1 align="center">Autor</h1>
+				<center><p>Ewa Polaniak</p>
+				<p>KrDUIs1011</p>
+				<p>174681</p>
+				<button onclick="onDeviceReady()">Urządzenie</button>
+				<p id="deviceProperties">Załaduj właściwości urządzenia ...</p>
+				<button onclick="checkConnection()">Siec</button>
+				<p id="demo"></p>
+				<button id = "vibration">Vibration</button>
+				</center>
+			</div>
+
+			<div data-role="footer" data-position="fixed">
+				<h1>Ewa Polaniak</h1>
+			</div>
+			
+			<div data-role="panel" id="myPanel"> 
+				<ul data-role="listview">
+					<li data-icon="back"><a href="#" data-rel="close">Zamknij</a></li>
+					<li><a href="#fromularz">Formularz</a></li>
+					<li><a href="#wynik">Wynik</a></li>
+					<li><a href="#autor">Autor</a></li>
+				</ul>
+			</div>
+			
+		</div>
+		
+</body>
+
+</html>
+
+
